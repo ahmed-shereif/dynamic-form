@@ -1,0 +1,52 @@
+@use '@angular/material' as mat;
+@use "../styles/material-form.scss";
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --error-color: #EB3E3E;
+  --label-color: #1C304C;
+  --place-holder:#B3B3B3;
+  --border-color: #D4D7E3;
+
+
+}
+
+$theme: mat.define-theme((color: (theme-type: light,
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      )));
+
+body {
+  @include mat.all-component-themes($theme);
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 30px;
+  height: 100%;
+
+  --mat-form-field-container-vertical-padding: 12px;
+  --mat-form-field-container-height: 48px;
+  --mat-mdc-form-field-floating-label-scale: 1;
+  --mdc-outlined-text-field-error-outline-color: #EB3E3E;
+}
+
+html {
+  height: 100%;
+}
+
+@include mat.core();
+@include mat.color-variants-backwards-compatibility($theme);
+
+input::placeholder {
+  // font-family: Helvetica Neue LT Arabic;
+  font-size: 14px !important;
+  font-weight: 400;
+  line-height: 14px;
+  color: var(--place-holder) !important;
+  
+}
+
+

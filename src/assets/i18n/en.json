@@ -1,0 +1,12 @@
+{
+    "isRequired": "is required.",
+    "invalidEmailAddress": "Please enter a valid email address.",
+    "isNotInCorrectFormat": "is not in the correct format.",
+    "cannotBeEmptyOrWhitespace": "cannot be empty or contain only whitespace.",
+    "mustBeLessThanOrEqualTo": "must be less than or equal to",
+    "mustBeAtLeast": "must be at least",
+    "cannotExceed": "cannot exceed",
+    "characters": "characters",
+    "invalid": "Invalid",
+    "length": "length"
+  }

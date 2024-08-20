@@ -1,0 +1,78 @@
+<div>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    @for (item of renderForm(); track item.row) {
+    <div class="grid gap-5 sm:grid-cols-1" [ngClass]="[item.rowDivision,item?.cssClasses]">
+      @for (control of item.fields; track control.id) {
+      @switch(control.controlType) {
+      @case ("text") {
+      <div class="flex flex-col mb-5" [ngClass]="control?.styleClasses">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>{{ control.displayName }}</mat-label>
+          <input matInput [formControlName]="control.controlName" [id]="'input_' + control.controlName" type="text"
+            [placeholder]="control.placeholder||''"
+            (focus)="onFocus(asFormControl(formGroup.get([control.controlName])))" />
+        </mat-form-field>
+        @if(control.hint){
+        <mat-hint class="text-[red]" [class]="control?.hint?.classes">{{control?.hint?.text}}</mat-hint>
+        }
+        <div class="h-6">
+          <validation-error-message [control]="control"
+            [validationFormControl]="asFormControl(formGroup.get([control.controlName]))"
+            [customeErrorMessages]="control?.customeErrorMessages">
+          </validation-error-message>
+        </div>
+
+      </div>
+
+      } @case ("number") {
+      <div class="flex flex-col mb-5" [ngClass]="control?.styleClasses">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>{{ control.displayName }}</mat-label>
+          <input matInput [formControlName]="control.controlName" [id]="'input_' + control.controlName" type="number"
+            [placeholder]="control.placeholder||''"
+            (focus)="onFocus(asFormControl(formGroup.get([control.controlName])))" />
+        </mat-form-field>
+        @if(control.hint){
+        <mat-hint class="text-[#D4D7E3]" [class]="control?.hint?.classes">{{control?.hint?.text}}</mat-hint>
+        }
+        <div class="h-6">
+          <validation-error-message [control]="control"
+            [validationFormControl]="asFormControl(formGroup.get([control.controlName]))"
+            [customeErrorMessages]="control?.customeErrorMessages">
+          </validation-error-message>
+        </div>
+      </div>
+
+      }
+      @case ("textarea") {
+      <text-area-form class="mb-5" [control]="control"
+        [textAreaFormControl]="asFormControl(formGroup.get([control.controlName]))"></text-area-form>
+      } @case("select"){
+
+      <drop-down class="mb-5" [control]="control" [dropDownList]="control?.dropDownTemplate?.list"
+        [dropDownFormControl]="asFormControl(formGroup.get([control.controlName]))"
+        (onSelectionChange)="control.dropDownTemplate.onSelectChange($event)">
+      </drop-down>
+
+
+      }
+
+      @case("autoComplete"){
+      <auto-complete class="mb-5" [control]="control" [options]="control?.autoCompleteTemplate?.list"
+        [autoCompleteFormControl]="asFormControl(formGroup.get([control.controlName]))"
+        (onSelectionChange)="control.autoCompleteTemplate.onSelectChange($event)">
+      </auto-complete>
+      }
+      @case("checkBox"){
+      <div class="text-[14px] text-[#1C304C] mb-5" [ngClass]="control.styleClasses">
+        <mat-checkbox [formControlName]="control.controlName">{{control.displayName}}
+        </mat-checkbox>
+        <div class="h-6"></div>
+      </div>
+      }
+      } }
+    </div>
+    }
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+  </form>
+</div>

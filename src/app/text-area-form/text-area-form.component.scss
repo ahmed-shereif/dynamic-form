@@ -1,0 +1,15 @@
+:host {
+    ::ng-deep {
+
+        .mat-mdc-text-field-wrapper {
+            min-height: 184px;
+            height: auto !important;
+        }
+
+        .mdc-text-field--no-label:not(.mdc-text-field--textarea) .mat-mdc-form-field-input-control.mdc-text-field__input,
+        .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+            min-height: 160px;
+            height: auto;
+        }
+    }
+}

@@ -1,0 +1,23 @@
+<div class="flex flex-col " [ngClass]="control.styleClasses">
+    <mat-form-field class="example-full-width" appearance="outline" floatLabel="always">
+        <mat-label>{{ control?control.displayName :''}}</mat-label>
+        <input #input type="text" [placeholder]="control.placeholder||''" matInput
+            [formControl]="autoCompleteFormControl" [matAutocomplete]="auto" (input)="filter()" (focus)="filter()"
+            (input)="onInputChange($event)" (focus)="onFocus(autoCompleteFormControl)">
+        <mat-autocomplete requireSelection  #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+            @for (option of filteredOptions; track option) {
+            <mat-option [value]="option.viewValue">{{option.viewValue}}</mat-option>
+            }
+        </mat-autocomplete>
+        <mat-icon matSuffix class="text-[#D4D7E3]">
+            arrow_drop_down
+        </mat-icon>
+    </mat-form-field>
+    @if(control.hint){
+    <mat-hint class="text-[#D4D7E3]" [class]="control.hint.classes">{{control.hint.text}}</mat-hint>
+    }
+    <div class="h-6">
+        <validation-error-message #validation [control]="control" [validationFormControl]="autoCompleteFormControl">
+        </validation-error-message>
+    </div>
+</div>

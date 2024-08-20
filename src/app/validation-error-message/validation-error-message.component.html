@@ -1,0 +1,18 @@
+@if (validationFormControl.hasError('required')&&validationFormControl.touched) {
+<div class="flex items-center text-[10px] text-[#EB3E3E]">
+    @if(validationFormControl.invalid&&errorMessage() ){
+    <mat-icon aria-hidden="false" fontIcon="error_outline"
+        class=" !w-[18px] !h-[18px] text-[18px]  flex items-center me-2"></mat-icon>
+    }
+    <mat-error>{{errorMessage() }}</mat-error>
+</div>
+}
+@if (!validationFormControl.hasError('required')) {
+<div class="flex items-center text-[10px] text-[#EB3E3E]">
+    @if(validationFormControl.invalid&&errorMessage() ){
+    <mat-icon aria-hidden="false" fontIcon="error_outline"
+        class=" !w-[18px] !h-[18px] text-[18px]  flex items-center me-2"></mat-icon>
+    }
+    <mat-error>{{errorMessage() }}</mat-error>
+</div>
+}

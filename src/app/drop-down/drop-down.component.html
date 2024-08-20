@@ -1,0 +1,18 @@
+<div class="flex flex-col" [ngClass]="control.styleClasses">
+  <mat-form-field class="w-full max-w-full" appearance="outline" floatLabel="always">
+    <mat-label>{{ control?control.displayName :''}}</mat-label>
+    <mat-select (selectionChange)="selectionChange($event)" (openedChange)="open()" (focus)="focus(dropDownFormControl)"
+      [formControl]="dropDownFormControl">
+      @for (option of dropDownList; track option.value) {
+      <mat-option [value]="option?.value">{{ option?.viewValue }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  @if(control.hint){
+    <mat-hint class="text-[#D4D7E3]" [class]="control.hint.classes">{{control.hint.text}}</mat-hint>
+    }
+  <div class="h-6">
+    <validation-error-message #validation [control]="control" [validationFormControl]="dropDownFormControl">
+    </validation-error-message>
+  </div>
+</div>
