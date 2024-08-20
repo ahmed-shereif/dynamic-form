@@ -31,7 +31,7 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     MatInputModule,
     ValidationErrorMessageComponent,
-    CommonModule 
+    CommonModule
   ],
   templateUrl: './drop-down.component.html',
   styleUrl: './drop-down.component.scss',
@@ -63,7 +63,9 @@ export class DropDownComponent implements OnChanges {
     this.onOpen.emit(null);
   }
   focus(formControl: FormControl) {
-    formControl.patchValue('')
+    if (!this.dropDownFormControl.getRawValue() && this.dropDownFormControl.getRawValue() !== 0) {
+      formControl.patchValue('')
+    }
 
   }
 }

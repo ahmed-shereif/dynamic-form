@@ -13,7 +13,7 @@
             (focus)="onFocus(asFormControl(formGroup.get([control.controlName])))" />
         </mat-form-field>
         @if(control.hint){
-        <mat-hint class="text-[red]" [class]="control?.hint?.classes">{{control?.hint?.text}}</mat-hint>
+        <mat-hint class="text-[#D4D7E3]" [class]="control?.hint?.classes">{{control?.hint?.text}}</mat-hint>
         }
         <div class="h-6">
           <validation-error-message [control]="control"

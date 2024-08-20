@@ -1,5 +1,5 @@
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Component, Input, signal, SimpleChanges } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, Input, signal, SimpleChanges } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IControls } from '../interfaces/Icontrols';
 import { MatInputModule } from '@angular/material/input';
@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [FormsModule, ReactiveFormsModule, MatInputModule, CommonModule, MatIconModule],
   templateUrl: './validation-error-message.component.html',
   styleUrl: './validation-error-message.component.scss',
+  // changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class ValidationErrorMessageComponent {
   @Input() validationFormControl!: FormControl
@@ -40,14 +41,13 @@ export class ValidationErrorMessageComponent {
   subscribeToFormControlChange() {
     this.validationFormControl.valueChanges.subscribe(res => {
       this.errorMessage.set(this.getErrorMessage(this.validationFormControl))
-      console.log('🙋‍♂️', this.control.displayName)
-      console.log('😿', this.validationFormControl)
+
     })
   }
 
   getErrorMessage(formControl: any): string | null {
-    console.log('👉',)
-    const displayName = this.translateService.instant(this.control.displayName);
+
+    const displayName = this.translateService?.instant(this.control.displayName || this.control.controlName);
     if (formControl && formControl.invalid) {
       switch (true) {
         case formControl.errors?.['required'] != null:

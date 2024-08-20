@@ -64,17 +64,16 @@ export class AutoCompleteComponent implements OnChanges {
   }
 
   onFocus(formControl: FormControl) {
-    if (!this.autoCompleteFormControl.getRawValue()) {
-
+    if (formControl.getRawValue() === "") {
       formControl.patchValue('')
     }
-    // console.log('Control is focused');
   }
   onOptionSelected(event: any) {
-    console.log('💍', event)
     this.currentSelection = this.options.filter((el: any) => {
       el.viewValue == event.option.value
     })
-    console.log('👩‍💻', this.currentSelection)
+  }
+  onDropDownOpened() {
+    this.filteredOptions = this.options;
   }
 }

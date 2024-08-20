@@ -1,3 +1,4 @@
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Validator, FormGroup } from '@angular/forms';
 // import { DynamicFormsComponent } from './../dynamic-forms/dynamic-forms.component';
 import {
@@ -27,10 +28,12 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { IControls } from '../interfaces/Icontrols';
+import { DataType, IControls } from '../interfaces/Icontrols';
 import { DynamicFormsComponent } from '../dynamic-forms/dynamic-forms.component';
 import { LookupComponent } from '../multi-select-auto-complete/lookup.component';
 import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
+import { IFormUiStructure } from '../interfaces/IFormUiStructure';
+
 interface Food {
   value: string;
   viewValue: string;
@@ -60,12 +63,28 @@ interface Animal {
     ReactiveFormsModule,
     DynamicFormsComponent,
     LookupComponent,
-    AutoCompleteComponent
+    AutoCompleteComponent,
+    HttpClientModule
   ],
   templateUrl: './signal.component.html',
   styleUrl: './signal.component.scss',
 })
 export class SignalComponent implements AfterViewInit {
+  months = [
+    { value: 1, viewValue: 'January' },
+    { value: 2, viewValue: 'February' },
+    { value: 3, viewValue: 'March' },
+    { value: 4, viewValue: 'April' },
+    { value: 5, viewValue: 'May' },
+    { value: 6, viewValue: 'June' },
+    { value: 7, viewValue: 'July' },
+    { value: 8, viewValue: 'August' },
+    { value: 9, viewValue: 'September' },
+    { value: 10, viewValue: 'October' },
+    { value: 11, viewValue: 'November' },
+    { value: 12, viewValue: 'December' }
+  ];
+  years: any = [];
   @ViewChild('myForm') myForm!: DynamicFormsComponent;
   dropdownTest: any = null;
   controls = signal<IControls[]>([
@@ -78,7 +97,8 @@ export class SignalComponent implements AfterViewInit {
 
       displayName: 'المجموع',
       isDisable: false,
-      hint: { text: '%', classes: 'bg-black' }
+      hint: { text: '%', classes: "" },
+      dataType: DataType.number,
     },
     {
       id: 233,
@@ -89,6 +109,7 @@ export class SignalComponent implements AfterViewInit {
 
       displayName: 'ddddddddd',
       isDisable: false,
+      dataType: DataType.string
 
     },
     {
@@ -99,6 +120,7 @@ export class SignalComponent implements AfterViewInit {
         null,
       displayName: 'allowanything',
       isDisable: false,
+      dataType: DataType.boolean
 
     },
     {
@@ -118,6 +140,8 @@ export class SignalComponent implements AfterViewInit {
           console.log('', event);
         },
       },
+      dataType: DataType.string
+
     },
     {
       id: 66,
@@ -137,6 +161,8 @@ export class SignalComponent implements AfterViewInit {
           console.log('', event);
         },
       },
+      dataType: DataType.string
+
     },
     {
       id: 1212,
@@ -151,6 +177,8 @@ export class SignalComponent implements AfterViewInit {
           console.log('', event);
         },
       },
+      dataType: DataType.string
+
     },
 
 
@@ -161,7 +189,9 @@ export class SignalComponent implements AfterViewInit {
       validator: [Validators.required, Validators.min(10)],
       displayName: 'ttt1',
       isDisable: false,
-      placeholder: '1'
+      placeholder: '1',
+      dataType: DataType.string
+
     },
 
     {
@@ -170,6 +200,8 @@ export class SignalComponent implements AfterViewInit {
       controlType: 'text',
       validator: [Validators.required, Validators.minLength(10)],
       displayName: 'ttt1',
+      dataType: DataType.string
+
     },
     {
       id: 4,
@@ -177,6 +209,8 @@ export class SignalComponent implements AfterViewInit {
       displayName: 'address1123',
       controlType: 'text',
       validator: null,
+      dataType: DataType.string
+
     },
     {
       id: 5,
@@ -184,6 +218,8 @@ export class SignalComponent implements AfterViewInit {
       displayName: 'text',
       controlType: 'text',
       validator: null,
+      dataType: DataType.string
+
     },
     {
       id: 6,
@@ -191,6 +227,8 @@ export class SignalComponent implements AfterViewInit {
       displayName: 'nationality',
       controlType: 'text',
       validator: null,
+      dataType: DataType.string
+
     },
     {
       id: 7,
@@ -198,6 +236,8 @@ export class SignalComponent implements AfterViewInit {
       displayName: 'nationality',
       controlType: 'text',
       validator: null,
+      dataType: DataType.string
+
     },
     {
       id: 229,
@@ -207,7 +247,9 @@ export class SignalComponent implements AfterViewInit {
         null,
       displayName: 'allowanything',
       isDisable: false,
-      styleClasses: "mt-[-30px]"
+      styleClasses: "mt-[-30px]",
+      dataType: DataType.string
+
 
     },
     {
@@ -216,6 +258,8 @@ export class SignalComponent implements AfterViewInit {
       displayName: 'nationality',
       controlType: 'text',
       validator: null,
+      dataType: DataType.string
+
     },
     {
       id: 9,
@@ -223,22 +267,79 @@ export class SignalComponent implements AfterViewInit {
       displayName: 'nationality',
       controlType: 'textarea',
 
+      validator: Validators.compose([Validators.required, Validators.maxLength(2000)]),
+      dataType: DataType.string
+
+    },
+    {
+      id: 67,
+      controlName: 'fromMonth',
+      controlType: 'autoComplete',
+      isDisable: false,
+      displayName: 'JoiningDate',
+      placeholder: "",
       validator: Validators.required,
+      autoCompleteTemplate: {
+        list: this.months,
+        onSelectChange: (event: MatSelectChange) => {
+          console.log('', event);
+        },
+      },
+      dataType: DataType.string
+
+    }, {
+      id: 68,
+      controlName: 'fromYear',
+      controlType: 'autoComplete',
+      isDisable: false,
+      displayName: '',
+      placeholder: "fromYear",
+      validator: Validators.required,
+      autoCompleteTemplate: {
+        list: this.years,
+        onSelectChange: (event: MatSelectChange) => {
+          console.log('', event);
+        },
+      },
+      dataType: DataType.string
+
+    }, {
+      id: 69,
+      controlName: 'toMonth',
+      controlType: 'autoComplete',
+      isDisable: false,
+      displayName: 'finishDate',
+      placeholder: "toMonth",
+      validator: Validators.required,
+      autoCompleteTemplate: {
+        list: this.months,
+        onSelectChange: (event: MatSelectChange) => {
+          console.log('', event);
+        },
+      },
+      dataType: DataType.string
+
+    }, {
+      id: 70,
+      controlName: 'toYear',
+      controlType: 'autoComplete',
+      isDisable: false,
+      displayName: '',
+      placeholder: "toYear",
+      validator: Validators.required,
+      autoCompleteTemplate: {
+        list: this.years,
+        onSelectChange: (event: MatSelectChange) => {
+          console.log('', event);
+        },
+      },
+      dataType: DataType.string
+
     },
 
-    {
-      id: 1,
-      controlName: 't1',
-      controlType: 'textarea',
-      validator: Validators.required,
-      displayName: 't1',
-      customeErrorMessages: {
-        required: "fffffffffffffffffffffff"
-      }
-    },
 
   ]);
-  formUiStructure = signal<any[]>([
+  formUiStructure = signal<IFormUiStructure[]>([
     { row: 1, colsNumbers: 2, fields: [], rowDivision: 'md:grid-cols-2', cssClasses: '' },
     { row: 9, colsNumbers: 1, fields: [], rowDivision: 'md:grid-cols-1', cssClasses: "" },
     {
@@ -254,9 +355,16 @@ export class SignalComponent implements AfterViewInit {
     { row: 7, colsNumbers: 1, fields: [], rowDivision: 'md:grid-cols-1', cssClasses: "" },
     { row: 8, colsNumbers: 1, fields: [], rowDivision: 'md:grid-cols-1', cssClasses: "" },
     { row: 11, colsNumbers: 1, fields: [], rowDivision: 'md:grid-cols-1', cssClasses: "" },
+    { row: 12, colsNumbers: 4, fields: [], rowDivision: 'md:grid-cols-4', cssClasses: "" },
   ]);
 
-  constructor() { }
+  constructor(private http: HttpClient) {
+    for (let year = 2029; year >= 1960; year--) {
+      this.years.push({ value: year, viewValue: year.toString() });
+    }
+
+  }
+
   ngAfterViewInit(): void {
     this.myForm.formGroup
       .get('dropdownTest')
@@ -278,12 +386,19 @@ export class SignalComponent implements AfterViewInit {
           });
         }
       });
-
-
+    this.myForm.formGroup.get("address")?.patchValue("hrlllllllllllll")
+    this.http.get('assets/formData.json').subscribe(response => {
+      console.log(response);
+      this.myForm.fetchedData.set(response);
+      console.log('🦸‍♀️', this.myForm.fetchedData())
+      this.myForm.fillTheFormWithBackEndData()
+    });
   }
 
   getValue() {
     console.log('👮‍♀️', this.myForm.formGroup.value)
+    this.myForm.getDirtFormValues()
+    console.log('👩‍❤️‍👩', this.myForm.getDirtFormValues())
 
   }
 

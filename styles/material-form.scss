@@ -81,13 +81,14 @@
         border-color: var(--error-color);
     }
 
-    .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--invalid.mdc-text-field--focused  .mat-mdc-notch-piece {
+    .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--invalid.mdc-text-field--focused .mat-mdc-notch-piece {
         border-color: var(--error-color);
     }
 
     .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--invalid .mdc-floating-label {
         color: var(--error-color);
     }
+
     .mat-internal-form-field>label {
         margin-left: 0;
         margin-right: auto;
@@ -103,5 +104,28 @@
         height: 5px;
         position: relative;
         color: #D4D7E3 !important;
+    }
+
+
+    // style disabled form fields
+    /* Target the disabled form field with outline appearance */
+
+    .mat-form-field-disabled .mat-mdc-form-field-flex {
+        // background-color:#C8C8C8;
+    }
+
+    .mat-form-field-disabled .mdc-notched-outline__trailing {
+        // background-color:#C8C8C8;
+    }
+
+    .mat-form-field-disabled .mat-mdc-notch-piece {
+        background-color:#C8C8C8;
+        border:0px;
+        
+    }
+    .mat-form-field-disabled input{
+        color: #737373 !important;
+        position: absolute;
+        z-index: 10;
     }
 }

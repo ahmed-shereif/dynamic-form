@@ -5,6 +5,9 @@
             (focus)="onFocus(textAreaFormControl)"></textarea>
 
     </mat-form-field>
+    <div class="text-[#6F7174] text-[10px]">
+        {{textLength}}/2000
+    </div>
     @if(control.hint){
     <mat-hint class="text-[#D4D7E3]" [class]="control.hint.classes">{{control.hint.text}}</mat-hint>
     }

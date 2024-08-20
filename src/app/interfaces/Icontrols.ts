@@ -1,8 +1,21 @@
 import { ValidatorFn } from '@angular/forms';
 import { IValidationError } from './IValidationError';
 
+export enum DataType{
+  string="string",
+  number="number",
+  boolean="boolean",
+  object="object"
+}
+
+export interface ISelectValue {
+  value: string | number;
+  viewValue: string
+}
+
 export interface IControls {
   id: number;
+  dataType: DataType
   controlName: string;
   displayName: string;
   controlType: string;
@@ -12,13 +25,14 @@ export interface IControls {
   validator: ValidatorFn | null | Array<ValidatorFn>;
   customeErrorMessages?: IValidationError;
   dropDownTemplate?: {
-    list: { value: string | number; viewValue: string }[];
+    list: ISelectValue[];
     onSelectChange?: Function;
   };
   autoCompleteTemplate?: {
-    list: { value: string | number; viewValue: string }[];
+    list: ISelectValue[];
     onSelectChange?: Function;
   };
   hint?: { text: string, classes?: string },
-  styleClasses?:string;
+  styleClasses?: string;
+  
 }

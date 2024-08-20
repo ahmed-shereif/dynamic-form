@@ -4,7 +4,7 @@
         <input #input type="text" [placeholder]="control.placeholder||''" matInput
             [formControl]="autoCompleteFormControl" [matAutocomplete]="auto" (input)="filter()" (focus)="filter()"
             (input)="onInputChange($event)" (focus)="onFocus(autoCompleteFormControl)">
-        <mat-autocomplete requireSelection  #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+        <mat-autocomplete requireSelection  #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" (opened)="onDropDownOpened()">
             @for (option of filteredOptions; track option) {
             <mat-option [value]="option.viewValue">{{option.viewValue}}</mat-option>
             }

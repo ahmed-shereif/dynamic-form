@@ -21,13 +21,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { DropDownComponent } from '../drop-down/drop-down.component';
-import { IControls } from '../interfaces/Icontrols';
+import { DataType, IControls } from '../interfaces/Icontrols';
 import { ValidationErrorMessageComponent } from '../validation-error-message/validation-error-message.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AutoCompleteComponent } from "../auto-complete/auto-complete.component";
 import { TextAreaFormComponent } from '../text-area-form/text-area-form.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { IFormUiStructure } from '../interfaces/IFormUiStructure';
 
 @Component({
   selector: 'app-dynamic-forms',
@@ -52,7 +53,8 @@ export class DynamicFormsComponent implements OnInit, OnChanges {
   formGroup!: FormGroup;
   renderForm = signal<any[]>([]);
   @Input() controls!: IControls[];
-  @Input() formUiStructure!: any[];
+  @Input() formUiStructure!: IFormUiStructure[];
+  fetchedData = signal<any>({});
 
   constructor(private fb: FormBuilder) {
 
@@ -85,7 +87,7 @@ export class DynamicFormsComponent implements OnInit, OnChanges {
     }
   }
 
-  buildRenderForm(controls: IControls[], formUiStructure: any[]): void {
+  buildRenderForm(controls: IControls[], formUiStructure: IFormUiStructure[]): void {
     const form: any[] = [];
     let controlIndex = 0;
 
@@ -120,7 +122,41 @@ export class DynamicFormsComponent implements OnInit, OnChanges {
   }
 
   onFocus(formControl: FormControl) {
-    formControl.patchValue('')
-    console.log('Control is focused');
+    if (formControl.getRawValue() === "") {
+      formControl.patchValue('')
+    }
+  }
+
+  fillTheFormWithBackEndData() {
+    Object.keys(this.fetchedData()).forEach(key => {
+      this.formGroup.get(key)?.patchValue(this.fetchedData()[key])
+    });
+  }
+
+  getDirtFormValues(): { [key: string]: string | number | boolean | object } {
+    let data: { [key: string]: string | number | boolean | object } = {};
+    Object.keys(this.formGroup.getRawValue()).forEach((key: string) => {
+      if (this.formGroup.get(key)?.dirty && this.formGroup.get(key)?.getRawValue() !== "") {
+        let control = this.controls.find((el: IControls) => el.controlName === key);
+        if (control?.dataType == DataType.string) {
+          data[key] = this.formGroup.get(key)?.getRawValue()
+        }
+        else if (control?.dataType == DataType.number) {
+          try {
+            data[key] = Number(this.formGroup.get(key)?.getRawValue())
+            if (isNaN(data[key])) {
+              throw new Error(`can't convert form control ${control.controlName} to number`)
+
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        }
+        else {
+          data[key] = this.formGroup.get(key)?.getRawValue()
+        }
+      }
+    })
+    return data;
   }
 }
